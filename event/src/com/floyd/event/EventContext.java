@@ -41,11 +41,11 @@ public class EventContext<T> extends EventObject<T> {
 
 			if (CODE_ERROR == type) {
 				ErrorObject errorObject = (ErrorObject) o;
-				callback.onError(null, errorObject.code, errorObject.message);
+				callback.onError(errorObject.code, errorObject.message);
 			} else if (CODE_SUCCESS == type) {
-				callback.onSuccess(null, o);
+				callback.onSuccess(o);
 			} else if (CODE_PROGRESS == type) {
-				callback.onProgress(null, (Integer) o);
+				callback.onProgress((Integer) o);
 			} else {
 				Log.e(TAG, "handler type is not match!");
 			}
@@ -142,10 +142,6 @@ public class EventContext<T> extends EventObject<T> {
 		Event event = Event.createInstance();
 		event.setEventHandlerLink(ttt).setEventCallback(eventCallback)
 				.setEventDispatch(eventDispatch);
-		fireEvent(event, args);
-	}
-
-	public <T> void fireEvent(Event event, T args) {
 		eventEmitter.fireEvent(event, args);
 	}
 }

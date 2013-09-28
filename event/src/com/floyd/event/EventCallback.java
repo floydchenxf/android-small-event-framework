@@ -15,19 +15,19 @@ public interface EventCallback<T> {
 	 * @param code
 	 * @param message
 	 */
-	void onError(EventEmitter emitter, int code, String message);
+	void onError(int code, String message);
 
 	/**
 	 * 成功处理
 	 * 
 	 * @param t
 	 */
-	void onSuccess(EventEmitter emitter, T t);
+	void onSuccess(T t);
 
 	/**
 	 * 进度处理
 	 * 
 	 * @param i
 	 */
-	void onProgress(EventEmitter emitter, int i);
+	void onProgress(int i);
 }

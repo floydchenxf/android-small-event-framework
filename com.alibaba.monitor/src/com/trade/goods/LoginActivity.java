@@ -55,14 +55,14 @@ public class LoginActivity extends Activity {
 		EventCallback<LoginVO> loginCallback = new EventCallback<LoginVO>() {
 
 			@Override
-			public void onError(EventEmitter emitter, int code, String message) {
+			public void onError(int code, String message) {
 				dataLoadDialog.dismiss();
 				Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT)
 						.show();
 			}
 
 			@Override
-			public void onSuccess(EventEmitter emitter, LoginVO t) {
+			public void onSuccess(LoginVO t) {
 				dataLoadDialog.dismiss();
 				Intent it = new Intent(LoginActivity.this, MainActivity.class);
 				startActivity(it);
@@ -70,7 +70,7 @@ public class LoginActivity extends Activity {
 			}
 
 			@Override
-			public void onProgress(EventEmitter emitter, int i) {
+			public void onProgress(int i) {
 				// do nothing;
 			}
 
