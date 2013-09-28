@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <color name="P_black_light_8">#FFF2F2F2</color>
+    <color name="blue">#CC134276</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="tiny">#bbbbbb</color>
+    <color name="black">#ff000000</color>
+    <color name="alpha_black">#66000000</color>
+
+</resources>

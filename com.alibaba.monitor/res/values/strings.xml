@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="trade_goods">商品交易平台</string>
+    <string name="user_name_tip">请输入用户名</string>
+    <string name="passwd_tip">请输入密码</string>
+    <string name="login_text">登  录</string>
+    <string name="input_login_info">请输入用户名和密码</string>
+
+</resources>
