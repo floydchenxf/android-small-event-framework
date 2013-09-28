@@ -11,8 +11,9 @@ import com.floyd.request.HttpCallback;
 import com.floyd.request.Request;
 import com.floyd.request.RequestFactory;
 import com.floyd.request.RequestMethod;
+import com.floyd.request.RequestParam;
 
-public class HttpGetRequestEventHandler implements EventHandler<String>{
+public class HttpGetRequestEventHandler implements EventHandler<RequestParam>{
 	
 	private Context context;
 	
@@ -29,7 +30,7 @@ public class HttpGetRequestEventHandler implements EventHandler<String>{
 
 
 	@Override
-	public void handler(final EventContext<String> eventContext, String url) {
+	public void handler(final EventContext<RequestParam> eventContext, RequestParam requestParam) {
 		
 		boolean valid = false;
 		NetworkInfo networkInfo = getNetworkInfo(context);
@@ -42,7 +43,7 @@ public class HttpGetRequestEventHandler implements EventHandler<String>{
 			return;
 		}
 		
-		Request request = RequestFactory.getRequest(RequestMethod.GET, url, null, new HttpCallback() {
+		Request request = RequestFactory.getRequest(RequestMethod.GET, requestParam.url, requestParam.params, new HttpCallback() {
 			
 			@Override
 			public void onSuccess(Object obj) {

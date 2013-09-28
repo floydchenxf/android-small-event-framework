@@ -19,7 +19,7 @@ import com.floyd.event.EventCallback;
 import com.floyd.event.EventEmitter;
 import com.floyd.event.EventEmitterGenerator;
 import com.floyd.handler.HttpPostRequestEventHandler;
-import com.floyd.handler.HttpPostRequestEventHandler.RequsetPostParams;
+import com.floyd.request.RequestParam;
 import com.trade.goods.login.EventHandlerConstants;
 import com.trade.goods.login.handler.LoginVO;
 import com.trade.goods.login.handler.LoginVOConvertEventHandler;
@@ -101,13 +101,13 @@ public class LoginActivity extends Activity {
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("uname", uname);
 				params.put("upwd", password);
-				RequsetPostParams postParams = new RequsetPostParams();
-				postParams.url = url;
-				postParams.params = params;
+				RequestParam requestParam = new RequestParam();
+				requestParam.url = url;
+				requestParam.params = params;
 
 				dataLoadDialog.show();
 				eventEmitter.fireEvent(EventHandlerConstants.LOGIN_EVENT,
-						postParams);
+						requestParam);
 			}
 		});
 	}

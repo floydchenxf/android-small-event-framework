@@ -1,21 +1,19 @@
 package com.floyd.handler;
 
-import java.util.Map;
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.floyd.event.EventContext;
 import com.floyd.event.EventHandler;
-import com.floyd.handler.HttpPostRequestEventHandler.RequsetPostParams;
 import com.floyd.request.HttpCallback;
 import com.floyd.request.Request;
 import com.floyd.request.RequestFactory;
 import com.floyd.request.RequestMethod;
+import com.floyd.request.RequestParam;
 
 public class HttpPostRequestEventHandler implements
-		EventHandler<RequsetPostParams> {
+		EventHandler<RequestParam> {
 
 	private Context context;
 
@@ -31,7 +29,7 @@ public class HttpPostRequestEventHandler implements
 	}
 
 	@Override
-	public void handler(final EventContext<RequsetPostParams> eventContext, RequsetPostParams args) {
+	public void handler(final EventContext<RequestParam> eventContext, RequestParam args) {
 		boolean valid = false;
 		NetworkInfo networkInfo = getNetworkInfo(context);
 		if (networkInfo != null) {
@@ -64,10 +62,4 @@ public class HttpPostRequestEventHandler implements
 
 		request.request();
 	}
-
-	public static class RequsetPostParams {
-		public String url;
-		public Map<String, String> params;
-	}
-
 }

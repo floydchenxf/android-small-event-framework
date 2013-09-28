@@ -1,5 +1,7 @@
 package com.floyd.event;
 
+import com.floyd.dispatch.DefaultEventDispatch;
+
 /**
  * 注册事件对象
  * 
