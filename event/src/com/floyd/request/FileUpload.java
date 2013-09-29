@@ -26,8 +26,8 @@ public class FileUpload implements Request {
 	private static final String LINE_END = "\r\n";
 	private static final String CONTENT_TYPE = "multipart/form-data"; // 内容类型
 
-	private int readTimeOut = 30 * 1000; // 读取超时
-	private int connectTimeout = 30 * 1000; // 超时时间
+	private int readTimeOut = 10 * 1000; // 读取超时
+	private int connectTimeout = 10 * 1000; // 超时时间
 
 	private static final String CHARSET = "utf-8"; // 设置编码
 

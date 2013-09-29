@@ -82,7 +82,7 @@ public class LoginActivity extends Activity {
 				.setEventCallback(loginCallback);
 		eventEmitter.regEvent(EventHandlerConstants.LOGIN_EVENT, loginEvent);
 
-		final String url = "http://192.168.10.111:8080/buyi/wb/login";
+		final String url = this.getResources().getString(R.string.login_url);
 
 		loginButton.setOnClickListener(new OnClickListener() {
 
