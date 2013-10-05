@@ -55,7 +55,7 @@ public class EventTaskManager extends Thread {
 				}
 
 				EventObject<Object> eventObject = eventObjectQueue.poll();
-				if (eventObject == null) {
+				if (eventObject == null || eventObject.isCanceled()) {
 					continue;
 				}
 

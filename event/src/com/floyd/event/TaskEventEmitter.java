@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class TaskEventEmitter implements EventEmitter {
 
-	private static final String TAG = TaskEventEmitter.class.getSimpleName();
+//	private static final String TAG = TaskEventEmitter.class.getSimpleName();
 
 	private EventEmitterConfiguration eventEmitterConfiguration;
 	

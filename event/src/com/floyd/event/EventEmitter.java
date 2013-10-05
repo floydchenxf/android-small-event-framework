@@ -9,14 +9,14 @@ public interface EventEmitter {
 	void regEvent(String eventName, Event event);
 
 	/**
-	 * 触发事件
+	 * 带注册的触发事件
 	 * 
 	 * @param args
 	 */
 	<T> FiredEvent fireEvent(String eventName, T args);
 
 	/**
-	 * 触发事件
+	 * 不需要注册直接触发事件
 	 * 
 	 * @param eventName
 	 * @param args
@@ -24,7 +24,7 @@ public interface EventEmitter {
 	<T> FiredEvent fireEvent(Event event, T args);
 	
 	/**
-	 * 触发事件
+	 * 为保持eventobject唯一(能够取消事件),特意加的触发事件
 	 * @param eventObject
 	 * @return
 	 */

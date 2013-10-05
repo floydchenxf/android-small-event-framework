@@ -38,6 +38,10 @@ public class DefaultEventExecutor implements EventExecutor {
 
 				@Override
 				public void run() {
+					if (eo.isCanceled()) {
+						return;
+					}
+					
 					EventContext<?> eventContext = new EventContext(eo);
 					EventHandler eh = ehl.getEventHandler();
 					if (eh == null) {
