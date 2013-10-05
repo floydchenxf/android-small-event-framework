@@ -33,8 +33,8 @@ public class HttpRequestPost implements Request {
 			
 			URL httpUrl = new URL(url);
 			conn = (HttpURLConnection) httpUrl.openConnection();
-			conn.setReadTimeout(30000);
-			conn.setConnectTimeout(30000);
+			conn.setReadTimeout(10000);
+			conn.setConnectTimeout(10000);
 			conn.setRequestProperty("Charset", "utf-8");
 			conn.setRequestProperty("connection", "keep-alive");
 			conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
