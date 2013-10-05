@@ -7,8 +7,8 @@ import android.util.Log;
 
 import com.floyd.handler.ErrorObject;
 
-public class EventContext<T> extends EventObject<T> {
-
+public class EventContext<T> {
+	
 	private static final int CODE_ERROR = 0;
 	private static final int CODE_SUCCESS = 1;
 	private static final int CODE_PROGRESS = 2;
@@ -53,15 +53,22 @@ public class EventContext<T> extends EventObject<T> {
 
 	};
 	
-	EventContext(EventObject<T> eo) {
-		super(eo.eventEmitter, eo.event, eo.args);
-	}
-
-	EventContext(EventEmitter ee, Event event, T args) {
-		super(ee, event, args);
+	private EventObject eventObject;
+	
+	EventContext(EventObject eo) {
+		this.eventObject = eo;
 	}
 
 	public void invokeError(int code, String message) {
+		// 取消直接返回
+		if (eventObject.isCanceled()) {
+			return;
+		}
+		
+		Event event = eventObject.getEvent();
+		EventEmitter eventEmitter = eventObject.getEventEmitter();
+		Object args = eventObject.getArgs();
+		
 		EventDispatch eventDispatch = event.getEventDispatch();
 		boolean continueEx = true;
 		if (eventDispatch != null) {
@@ -74,8 +81,7 @@ public class EventContext<T> extends EventObject<T> {
 				ErrorObject errorObject = new ErrorObject();
 				errorObject.code = code;
 				errorObject.message = message;
-				CallbackObject callbackObject = new CallbackObject(errorObject,
-						eventCallback);
+				CallbackObject callbackObject = new CallbackObject(errorObject, eventCallback);
 				Message msg = new Message();
 				msg.what = CODE_ERROR;
 				msg.obj = callbackObject;
@@ -85,6 +91,15 @@ public class EventContext<T> extends EventObject<T> {
 	}
 
 	private void invokeSuccess(Object o) {
+		// 如果取消直接返回
+		if (eventObject.isCanceled()) {
+			return;
+		}
+		
+		Event event = eventObject.getEvent();
+		EventEmitter eventEmitter = eventObject.getEventEmitter();
+		Object args = eventObject.getArgs();
+		
 		EventDispatch eventDispatch = event.getEventDispatch();
 		boolean continueEx = true;
 		if (eventDispatch != null) {
@@ -106,17 +121,25 @@ public class EventContext<T> extends EventObject<T> {
 	}
 
 	public void invokeProgress(int progress) {
+		// 如果取消直接返回
+		if (eventObject.isCanceled()) {
+			return;
+		}
+		
+		Event event = eventObject.getEvent();
+		EventEmitter eventEmitter = eventObject.getEventEmitter();
+		Object args = eventObject.getArgs();
+		
 		EventDispatch eventDispatch = event.getEventDispatch();
 		boolean continueEx = true;
 		if (eventDispatch != null) {
-			continueEx = eventDispatch.dispatchProgressEvent(eventEmitter,progress, args);
+			continueEx = eventDispatch.dispatchProgressEvent(eventEmitter, progress, args);
 		}
 
 		if (continueEx) {
 			EventCallback<?> eventCallback = event.getEventCallback();
 			if (eventCallback != null) {
-				CallbackObject callbackObject = new CallbackObject(progress,
-						eventCallback);
+				CallbackObject callbackObject = new CallbackObject(progress, eventCallback);
 				Message msg = new Message();
 				msg.what = CODE_PROGRESS;
 				msg.obj = callbackObject;
@@ -126,6 +149,12 @@ public class EventContext<T> extends EventObject<T> {
 	}
 
 	public void invokeNext(Object args) {
+		// 如果取消,直接返回
+		if (eventObject.isCanceled()) {
+			return; 
+		}
+		
+		Event event = eventObject.getEvent();
 		EventHandlerLink<?> ehl = event.getEventHandlerLink();
 		if (ehl == null) {
 			Log.e(TAG, "event handle link is null, pls check");
@@ -136,12 +165,14 @@ public class EventContext<T> extends EventObject<T> {
 			invokeSuccess(args);
 			return;
 		}
+		
+		EventEmitter eventEmitter = eventObject.getEventEmitter();
 
-		EventCallback<?> eventCallback = event.getEventCallback();
-		EventDispatch eventDispatch = event.getEventDispatch();
-		Event event = Event.createInstance();
-		event.setEventHandlerLink(ttt).setEventCallback(eventCallback)
-				.setEventDispatch(eventDispatch);
-		eventEmitter.fireEvent(event, args);
+		// 替换事件,保持整个流程中eventObject唯一
+		Event newEvent = Event.createInstance();
+		newEvent.setEventHandlerLink(ttt).setEventCallback(event.getEventCallback()).setEventDispatch(event.getEventDispatch());
+		eventObject.event = newEvent;
+		eventObject.args = args;
+		eventEmitter.fireEvent(eventObject);
 	}
 }

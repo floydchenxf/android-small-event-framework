@@ -13,7 +13,7 @@ public interface EventEmitter {
 	 * 
 	 * @param args
 	 */
-	<T> void fireEvent(String eventName, T args);
+	<T> FiredEvent fireEvent(String eventName, T args);
 
 	/**
 	 * 触发事件
@@ -21,7 +21,14 @@ public interface EventEmitter {
 	 * @param eventName
 	 * @param args
 	 */
-	<T> void fireEvent(Event event, T args);
+	<T> FiredEvent fireEvent(Event event, T args);
+	
+	/**
+	 * 触发事件
+	 * @param eventObject
+	 * @return
+	 */
+	<T> FiredEvent fireEvent(EventObject<T> eventObject);
 
 	/**
 	 * 初始化事件发送器

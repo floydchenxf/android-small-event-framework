@@ -11,8 +11,7 @@ import android.util.Log;
  */
 public class DefaultEventExecutor implements EventExecutor {
 
-	private static final String TAG = DefaultEventExecutor.class
-			.getSimpleName();
+	private static final String TAG = DefaultEventExecutor.class.getSimpleName();
 
 	private ExecutorService executorService;
 

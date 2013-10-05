@@ -25,22 +25,28 @@ public class TaskEventEmitter implements EventEmitter {
 		return eventEmitterConfiguration != null;
 	}
 
-	public <T> void fireEvent(Event event, T args) {
+	public <T> FiredEvent fireEvent(Event event, T args) {
 		EventObject<T> eventObject = new EventObject<T>(this, event, args);
+		return fireEvent(eventObject);
+	}
+	
+	public <T> FiredEvent fireEvent(EventObject<T> eventObject) {
 		eventEmitterConfiguration.manager.addTask(eventObject);
-		
+
 		if (eventEmitterConfiguration.showDebugLog) {
 			eventEmitterConfiguration.manager.printQueueObjects();
 		}
+		
+		return eventObject;
 	}
 	
-	public <T> void fireEvent(String eventName, T args) {
+	public <T> FiredEvent fireEvent(String eventName, T args) {
 		Event event = handlers.get(eventName);
 		if (event == null) {
-			throw new IllegalArgumentException("event not publish" + eventName);
+			throw new IllegalArgumentException("event not publish " + eventName);
 		}
-		
-		fireEvent(event, args);
+
+		return fireEvent(event, args);
 	}
 
 	public void initEventEmitter(EventEmitterConfiguration configuration) {

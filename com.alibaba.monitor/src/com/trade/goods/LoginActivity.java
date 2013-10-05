@@ -5,6 +5,8 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +20,7 @@ import com.floyd.event.Event;
 import com.floyd.event.EventCallback;
 import com.floyd.event.EventEmitter;
 import com.floyd.event.EventEmitterGenerator;
+import com.floyd.event.FiredEvent;
 import com.floyd.handler.HttpPostRequestEventHandler;
 import com.floyd.request.RequestParam;
 import com.trade.goods.login.EventHandlerConstants;
@@ -36,6 +39,8 @@ public class LoginActivity extends Activity {
 
 	EventEmitter eventEmitter = EventEmitterGenerator.getInstance()
 			.generateEmitter();
+	
+	FiredEvent firedEvent;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +50,18 @@ public class LoginActivity extends Activity {
 		dataLoadDialog = new Dialog(this, R.style.data_load_dialog);
 		ProgressBar bar = new ProgressBar(this);
 		dataLoadDialog.setContentView(bar);
-		dataLoadDialog.setCancelable(false);
+		dataLoadDialog.setCanceledOnTouchOutside(false);
+		
+		dataLoadDialog.setOnCancelListener(new OnCancelListener() {
+			
+			@Override
+			public void onCancel(DialogInterface arg0) {
+				if (firedEvent != null) {
+					firedEvent.cancel();
+				}
+				
+			}
+		});
 
 		unameView = (EditText) findViewById(R.id.uname);
 		passwdView = (EditText) findViewById(R.id.password);
@@ -82,7 +98,7 @@ public class LoginActivity extends Activity {
 				.setEventCallback(loginCallback);
 		eventEmitter.regEvent(EventHandlerConstants.LOGIN_EVENT, loginEvent);
 
-		final String url = "http://192.168.10.111:8080/buyi/wb/login";
+		final String url = this.getResources().getString(R.string.login_url);
 
 		loginButton.setOnClickListener(new OnClickListener() {
 
@@ -106,9 +122,17 @@ public class LoginActivity extends Activity {
 				requestParam.params = params;
 
 				dataLoadDialog.show();
-				eventEmitter.fireEvent(EventHandlerConstants.LOGIN_EVENT,
+				firedEvent = eventEmitter.fireEvent(EventHandlerConstants.LOGIN_EVENT,
 						requestParam);
 			}
 		});
 	}
+
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		firedEvent.cancel();
+		this.finish();
+	}
+
 }

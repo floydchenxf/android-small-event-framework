@@ -1,6 +1,6 @@
  package com.floyd.event;
 
-public class EventObject<T> {
+public class EventObject<T> implements FiredEvent {
 
 	/**
 	 * 事件发送器
@@ -13,6 +13,11 @@ public class EventObject<T> {
 	 * 事件参数
 	 */
 	protected T args;
+	
+	/**
+	 * 是否取消
+	 */
+	protected Boolean canceled = Boolean.FALSE;
 
 	public EventObject(EventEmitter source, Event event, T args) {
 		this.event = event;
@@ -42,6 +47,14 @@ public class EventObject<T> {
 
 	public void setEvent(Event event) {
 		this.event = event;
+	}
+	
+	public Boolean isCanceled() {
+		return this.canceled;
+	}
+	
+	public void cancel() {
+		this.canceled = Boolean.TRUE;
 	}
 
 }
