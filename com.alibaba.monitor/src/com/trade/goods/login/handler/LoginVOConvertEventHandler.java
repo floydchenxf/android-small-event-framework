@@ -6,6 +6,7 @@ import org.json.JSONTokener;
 
 import com.floyd.event.EventContext;
 import com.floyd.handler.AbstractConvertObjEventHandler;
+import com.floyd.request.HttpErrorInfo;
 
 public class LoginVOConvertEventHandler extends
 		AbstractConvertObjEventHandler<LoginVO, byte[]> {
@@ -18,7 +19,7 @@ public class LoginVOConvertEventHandler extends
 		try {
 			json = new JSONObject(jsonTokener);
 		} catch (JSONException e) {
-			eventContext.invokeError(333, "数据出问题了");
+			eventContext.invokeError(HttpErrorInfo.PARSE_CONTENT_ERROR.code, HttpErrorInfo.PARSE_CONTENT_ERROR.message);
 			return null;
 		}
 		

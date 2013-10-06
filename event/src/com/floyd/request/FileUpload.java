@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+
 /**
  * 文件上传
  * 
@@ -174,13 +175,13 @@ public class FileUpload implements Request {
 				timeCount++;
 			} else {
 				if (callback != null) {
-					callback.onError(444, "重试失败");
+					callback.onError(HttpErrorInfo.SOCKET_TIMEOUT_ERROR.code, HttpErrorInfo.SOCKET_TIMEOUT_ERROR.message);
 				}
 			}
 			return null;
 		} catch (Exception e) {
 			if (callback != null) {
-				callback.onError(999, e.toString());
+				callback.onError(HttpErrorInfo.UNKNOW_ERROR.code, HttpErrorInfo.UNKNOW_ERROR.message);
 			}
 			return null;
 		} finally {

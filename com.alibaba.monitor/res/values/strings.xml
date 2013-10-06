@@ -7,4 +7,5 @@
     <string name="login_text">登  录</string>
     <string name="input_login_info">请输入用户名和密码</string>
     <string name="login_url">http://192.168.1.13:8080/buyi/wb/login</string>
+    <string name="product_type_url">http://192.168.1.13:8080/buyi/wb/top_product_type?company_id=%1$d&amp;page_no=%2$d</string>
 </resources>

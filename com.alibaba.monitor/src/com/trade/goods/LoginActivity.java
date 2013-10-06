@@ -23,7 +23,6 @@ import com.floyd.event.EventEmitterGenerator;
 import com.floyd.event.FiredEvent;
 import com.floyd.handler.HttpPostRequestEventHandler;
 import com.floyd.request.RequestParam;
-import com.trade.goods.login.EventHandlerConstants;
 import com.trade.goods.login.handler.LoginVO;
 import com.trade.goods.login.handler.LoginVOConvertEventHandler;
 
@@ -41,6 +40,7 @@ public class LoginActivity extends Activity {
 			.generateEmitter();
 	
 	FiredEvent firedEvent;
+	Event loginEvent;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +73,7 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onError(int code, String message) {
 				dataLoadDialog.dismiss();
-				Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
 			}
 
 			@Override
@@ -92,14 +91,11 @@ public class LoginActivity extends Activity {
 
 		};
 
-		Event loginEvent = Event.createInstance();
+		loginEvent = Event.createInstance();
 		loginEvent.setNextHandler(new HttpPostRequestEventHandler(this))
 				.setNextHandler(new LoginVOConvertEventHandler())
 				.setEventCallback(loginCallback);
-		eventEmitter.regEvent(EventHandlerConstants.LOGIN_EVENT, loginEvent);
-
 		final String url = this.getResources().getString(R.string.login_url);
-
 		loginButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -108,9 +104,7 @@ public class LoginActivity extends Activity {
 				String password = passwdView.getText().toString();
 
 				if (uname.trim().equals("") || password.trim().equals("")) {
-					Toast.makeText(LoginActivity.this,
-							R.string.input_login_info, Toast.LENGTH_SHORT)
-							.show();
+					Toast.makeText(LoginActivity.this, R.string.input_login_info, Toast.LENGTH_SHORT).show();
 					return;
 				}
 
@@ -122,8 +116,7 @@ public class LoginActivity extends Activity {
 				requestParam.params = params;
 
 				dataLoadDialog.show();
-				firedEvent = eventEmitter.fireEvent(EventHandlerConstants.LOGIN_EVENT,
-						requestParam);
+				firedEvent = eventEmitter.fireEvent(loginEvent, requestParam);
 			}
 		});
 	}
@@ -131,7 +124,6 @@ public class LoginActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		firedEvent.cancel();
 		this.finish();
 	}
 

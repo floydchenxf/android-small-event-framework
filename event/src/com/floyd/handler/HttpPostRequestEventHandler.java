@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import com.floyd.event.EventContext;
 import com.floyd.event.EventHandler;
 import com.floyd.request.HttpCallback;
+import com.floyd.request.HttpErrorInfo;
 import com.floyd.request.Request;
 import com.floyd.request.RequestFactory;
 import com.floyd.request.RequestMethod;
@@ -37,7 +38,7 @@ public class HttpPostRequestEventHandler implements
 		}
 
 		if (!valid) {
-			eventContext.invokeError(999, "亲,网络不可用");
+			eventContext.invokeError(HttpErrorInfo.NETWORK_INVALIDABLE_ERROR.code, HttpErrorInfo.NETWORK_INVALIDABLE_ERROR.message);
 			return;
 		}
 
